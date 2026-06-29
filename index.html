@@ -1,0 +1,2811 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pena - Gamified Productivity & Budgeting Portal (Wireframe UI)</title>
+    <!-- Importing Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS RESET & SYSTEM STYLE */
+        :root {
+            --bg-main: #0f111a;
+            --border-card: #2e3248;
+            --bg-card: #161824;
+            --text-main: #f1f5f9;
+            --text-muted: #8f9bb3;
+            
+            --color-accent: #6366f1;  /* Indigo */
+            --color-green: #10b981;   /* Emerald */
+            --color-red: #ef4444;     /* Red */
+            --color-amber: #f59e0b;   /* Amber */
+            --color-pink: #ec4899;    /* Pink */
+            --color-purple: #a855f7;  /* Purple */
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #090a0f 0%, #11131e 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 20px 0;
+        }
+
+        /* WEB LAYOUT CONTAINER (FOR THE PHONE MOCKUP) */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .web-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* PHONE CHASSIS */
+        .phone-chassis {
+            width: 375px;
+            height: 812px;
+            background-color: #090a0f;
+            border: 12px solid #2e3248;
+            border-radius: 40px;
+            position: relative;
+            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.8), 0 0 0 2px rgba(46, 50, 72, 0.4);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* PHONE NOTCH */
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 24px;
+            background-color: #090a0f;
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .notch-camera {
+            width: 8px;
+            height: 8px;
+            background-color: #121420;
+            border: 1px solid #1e2230;
+            border-radius: 50%;
+        }
+
+        .notch-speaker {
+            width: 40px;
+            height: 4px;
+            background-color: #161824;
+            border: 1px solid #2e3248;
+            border-radius: 2px;
+        }
+
+        /* STATUS BAR */
+        .status-bar {
+            height: 44px;
+            padding: 14px 24px 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--text-muted);
+            user-select: none;
+            z-index: 990;
+        }
+
+        .status-time {
+            color: var(--text-muted);
+        }
+
+        .status-icons {
+            display: flex;
+            gap: 4px;
+        }
+
+        /* HEADER */
+        .screen-header {
+            height: 48px;
+            border-bottom: 1px solid #1e2230;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0 16px;
+            flex-shrink: 0;
+        }
+
+        .screen-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+        }
+
+        /* SCREEN VIEWPORT CONTENT AREA */
+        .screen-body {
+            flex: 1;
+            background-color: var(--bg-main);
+            overflow-y: auto;
+            padding: 16px;
+            padding-bottom: 80px; /* Space for navbar */
+            position: relative;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-card) var(--bg-main);
+        }
+
+        /* Custom Scrollbar for Phone Body */
+        .screen-body::-webkit-scrollbar {
+            width: 4px;
+        }
+        .screen-body::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+        .screen-body::-webkit-scrollbar-thumb {
+            background: var(--border-card);
+            border-radius: 2px;
+        }
+
+        /* AUTH GATE PAGE CONTAINER */
+        .auth-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-logo h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--color-accent), var(--color-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .auth-logo p {
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .auth-tabs {
+            display: flex;
+            background-color: #131524;
+            border: 1px solid var(--border-card);
+            border-radius: 18px;
+            padding: 2px;
+            margin-bottom: 20px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--text-muted);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .auth-tab.active {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            color: var(--text-main);
+        }
+
+        /* FORM CONTROLS */
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 9.5px;
+            font-weight: bold;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--color-accent);
+        }
+
+        .form-select {
+            width: 100%;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg fill='%238f9bb3' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+
+        /* BUTTONS */
+        .btn {
+            width: 100%;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            border: none;
+            border-radius: 22px;
+            padding: 12px;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-text-link {
+            text-align: center;
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--text-muted);
+            margin-top: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-text-link:hover {
+            color: var(--text-main);
+        }
+
+        /* PREMIUM CARDS */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* NOTIFICATION WARNING BANNERS */
+        .alert-banner {
+            background-color: rgba(239, 68, 68, 0.08);
+            border: 1px solid var(--color-red);
+            color: #f87171;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 9.5px;
+            font-weight: bold;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            line-height: 1.3;
+        }
+
+        .alert-banner-warning {
+            background-color: rgba(245, 158, 11, 0.08);
+            border: 1px solid var(--color-amber);
+            color: #fcd34d;
+        }
+
+        /* EXP PROGRESS BAR */
+        .exp-progress-container {
+            margin-top: 6px;
+        }
+
+        .exp-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .exp-lvl {
+            color: var(--color-amber);
+        }
+
+        .exp-val {
+            color: var(--text-muted);
+        }
+
+        .exp-bar-bg {
+            background-color: #1e2238;
+            border-radius: 6px;
+            height: 10px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .exp-bar-fill {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+            height: 100%;
+            border-radius: 6px;
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.1, 0.8, 0.2, 1);
+        }
+
+        /* DASHBOARD SIDE-BY-SIDE STATS */
+        .dashboard-stats-grid {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .dashboard-stat-card {
+            flex: 1;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 10px;
+            padding: 12px 14px;
+        }
+
+        .stat-value {
+            font-size: 1.15rem;
+            font-weight: bold;
+            margin-bottom: 2px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .stat-desc {
+            font-size: 8px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        /* CHECKLIST ACTIVITY LIST */
+        .section-header-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--text-main);
+            margin: 16px 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .task-list {
+            margin-bottom: 16px;
+        }
+
+        .task-item {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .task-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* CHECKBOX WIREFRAME STYLE */
+        .checkbox-container {
+            display: block;
+            position: relative;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 18px;
+            width: 18px;
+            background-color: transparent;
+            border: 2px solid var(--border-card);
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            border-color: var(--color-accent);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .checkbox-container .checkmark:after {
+            left: 4.5px;
+            top: 1.5px;
+            width: 5px;
+            height: 9px;
+            border: solid var(--color-green);
+            border-width: 0 2.5px 2.5px 0;
+            transform: rotate(45deg);
+        }
+
+        .task-details {
+            min-width: 0;
+        }
+
+        .task-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .task-item.completed .task-title {
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .task-category {
+            font-size: 8px;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+
+        .chip-badge {
+            background-color: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--color-accent);
+            color: #818cf8;
+            padding: 1px 6px;
+            border-radius: 12px;
+            font-size: 7.5px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .exp-tag {
+            background-color: rgba(245, 158, 11, 0.06);
+            border: 1px solid var(--color-amber);
+            color: var(--color-amber);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 7.5px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* CATEGORIES LIST SCROLL (HORIZONTAL CHIPS) */
+        .categories-chips-row {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 14px;
+            scrollbar-width: none;
+        }
+
+        .categories-chips-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-chip {
+            background-color: rgba(99, 102, 241, 0.05);
+            border: 1px solid var(--border-card);
+            border-radius: 14px;
+            padding: 5px 12px;
+            font-size: 9px;
+            font-weight: bold;
+            color: var(--text-muted);
+            white-space: nowrap;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .category-chip.active {
+            color: var(--text-main);
+        }
+
+        /* SEGMENTED TAB SELECTORS FOR FINANCE & ANALYTICS */
+        .segmented-tabs {
+            display: flex;
+            background-color: #131524;
+            border: 1px solid var(--border-card);
+            border-radius: 18px;
+            padding: 2px;
+            margin-bottom: 14px;
+        }
+
+        .segmented-tab {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            font-size: 9.5px;
+            font-weight: bold;
+            color: var(--text-muted);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .segmented-tab.active {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            color: var(--text-main);
+        }
+
+        /* COLOR PICKER INPUT WRAPPER */
+        .color-picker-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .color-picker-input {
+            width: 42px;
+            height: 38px;
+            border: 1px solid var(--border-card);
+            border-radius: 8px;
+            cursor: pointer;
+            background: none;
+            outline: none;
+            padding: 0;
+        }
+
+        /* FINANCE BALANCE DETAILS */
+        .finance-summary-card {
+            background: linear-gradient(180deg, #1f2235 0%, #121420 100%);
+            border-color: var(--border-card);
+            text-align: left;
+        }
+
+        .finance-summary-limit {
+            font-size: 8px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* TRANSACTIONS LIST */
+        .transaction-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #1e2230;
+        }
+
+        .transaction-row:last-child {
+            border-bottom: none;
+        }
+
+        .tx-desc {
+            font-size: 10.5px;
+            font-weight: bold;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .tx-meta {
+            font-size: 8px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .tx-amount {
+            font-size: 11px;
+            font-weight: bold;
+            font-family: 'Outfit', sans-serif;
+            text-align: right;
+        }
+
+        .tx-amount.sink {
+            color: var(--color-red);
+        }
+
+        .tx-amount.gain {
+            color: var(--color-green);
+        }
+
+        /* CHARTS */
+        .chart-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 10px;
+            padding: 12px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 14px;
+        }
+
+        /* SVG CHART DECORATIONS */
+        .chart-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* CHART SEGMENTED BAR */
+        .segmented-bar-container {
+            margin: 16px 0;
+        }
+        
+        .segmented-bar {
+            width: 100%;
+            height: 14px;
+            background-color: #1b1d2a;
+            border-radius: 7px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .segmented-bar-fill {
+            height: 100%;
+        }
+
+        /* CHART LEGENDS */
+        .legend-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 9px;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .legend-circle {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* LEADERBOARD PODIUMS */
+        .podium-section {
+            background: linear-gradient(180deg, #1f2235 0%, #121420 100%);
+            border: 1px solid var(--border-card);
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            gap: 8px;
+            margin-bottom: 16px;
+            height: 155px;
+        }
+
+        .podium-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 6px;
+            padding: 10px 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .podium-rank1 {
+            border-color: var(--color-amber);
+            background: rgba(245, 158, 11, 0.03);
+            height: 135px;
+        }
+
+        .podium-rank2 {
+            border-color: #64748b;
+            height: 115px;
+        }
+
+        .podium-rank3 {
+            border-color: #b45309;
+            height: 100px;
+        }
+
+        .podium-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #1f2235;
+            border: 1.5px solid #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 7.5px;
+            font-weight: bold;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .podium-rank1 .podium-avatar {
+            width: 28px;
+            height: 28px;
+            border-color: var(--color-amber);
+            font-size: 9px;
+        }
+
+        .podium-rank-tag {
+            font-size: 9px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .podium-rank1 .podium-rank-tag { color: var(--color-amber); }
+        .podium-rank2 .podium-rank-tag { color: #94a3b8; }
+        .podium-rank3 .podium-rank-tag { color: #d97706; }
+
+        .podium-name {
+            font-size: 8.5px;
+            font-weight: bold;
+            color: var(--text-main);
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            max-width: 65px;
+        }
+
+        .podium-level {
+            font-size: 7.5px;
+            font-weight: bold;
+            color: var(--color-amber);
+        }
+
+        /* LEADERBOARD LIST ROWS */
+        .leaderboard-row {
+            display: flex;
+            align-items: center;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 6px;
+        }
+
+        .leader-rank-num {
+            width: 20px;
+            font-size: 9.5px;
+            font-weight: bold;
+            color: var(--text-muted);
+        }
+
+        .leader-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--border-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 7.5px;
+            font-weight: bold;
+            color: var(--color-accent);
+            margin-right: 10px;
+        }
+
+        .leader-name {
+            flex: 1;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .leader-right {
+            text-align: right;
+        }
+
+        .leader-level {
+            font-size: 8.5px;
+            font-weight: bold;
+            color: var(--color-amber);
+        }
+
+        .leader-exp {
+            font-size: 7.5px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* MILESTONE BADGES ROW */
+        .badges-horizontal-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+
+        .badges-horizontal-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .badge-gallery-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 8px;
+            min-width: 72px;
+            width: 72px;
+            height: 75px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .badge-gallery-card.locked {
+            opacity: 0.4;
+        }
+
+        .badge-icon {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .badge-name {
+            font-size: 8.5px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .badge-share-btn {
+            position: absolute;
+            bottom: -4px;
+            background: var(--color-accent);
+            border: none;
+            color: white;
+            border-radius: 4px;
+            font-size: 6px;
+            padding: 2px 4px;
+            font-weight: bold;
+            cursor: pointer;
+            display: none;
+        }
+
+        .badge-gallery-card:hover:not(.locked) .badge-share-btn {
+            display: block;
+        }
+
+        /* SETTINGS OPTIONS */
+        .setting-item {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .setting-item:hover {
+            background-color: #1e2030;
+        }
+
+        .setting-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .setting-icon {
+            font-size: 13px;
+        }
+
+        .setting-label {
+            font-size: 10.5px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .setting-label.danger {
+            color: var(--color-red);
+        }
+
+        .setting-value {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-right: 4px;
+        }
+
+        .setting-arrow {
+            color: var(--text-muted);
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* STUDENT DETAIL BOARD */
+        .student-board {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 14px;
+            font-size: 9px;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .student-board h4 {
+            font-size: 10px;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        /* BOTTOM NAV BAR */
+        .bottom-nav {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+            height: 52px;
+            background-color: #11131e;
+            border: 1px solid #1e2230;
+            border-radius: 18px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 995;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .nav-icon {
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .nav-label {
+            font-size: 8px;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            color: var(--color-accent);
+            font-weight: bold;
+        }
+
+        /* TOGGLE SWITCH STYLING */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 34px;
+            height: 20px;
+        }
+
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-card);
+            border-radius: 20px;
+            transition: .3s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--text-main);
+            border-radius: 50%;
+            transition: .3s;
+        }
+
+        input:checked + .slider {
+            background-color: var(--color-green);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(14px);
+        }
+
+        /* POPUP SYSTEM (CELEBRATIONS & TOASTS) */
+        .toast-container {
+            position: absolute;
+            top: 50px;
+            left: 12px;
+            right: 12px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+
+        .toast-msg {
+            background-color: var(--bg-card);
+            border: 1px solid var(--color-amber);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: var(--text-main);
+            font-size: 9.5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: slideDown 0.3s cubic-bezier(0.1, 0.8, 0.2, 1), fadeOut 0.4s ease 2.6s forwards;
+            pointer-events: auto;
+        }
+
+        .toast-msg.success {
+            border-color: var(--color-green);
+        }
+
+        .toast-msg.danger {
+            border-color: var(--color-red);
+        }
+
+        /* CUSTOM BALLOON & CONFETTI ELEMENTS */
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1001;
+            animation: fall 1.5s linear forwards;
+        }
+
+        .balloon {
+            position: absolute;
+            width: 20px;
+            height: 24px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            pointer-events: none;
+            z-index: 1001;
+            animation: rise 3s ease-in forwards;
+        }
+
+        .balloon:after {
+            content: "▼";
+            font-size: 5px;
+            color: inherit;
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* KEYFRAMES ANIMATIONS */
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(600px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes rise {
+            0% { transform: translateY(600px); opacity: 0.9; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+
+        /* MODAL POPUPS */
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            z-index: 998;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 12px;
+            padding: 16px;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            z-index: 999;
+        }
+
+        .modal-card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .modal-card p {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 8px;
+            border-radius: 16px;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+        }
+
+        .modal-btn-primary {
+            background-color: var(--color-accent);
+            color: white;
+        }
+
+        .modal-btn-secondary {
+            background-color: var(--border-card);
+            color: var(--text-main);
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="web-title">UI Wireframe Mockup (V1.0)</div>
+        
+        <!-- PHONE CONTAINER -->
+        <div class="phone-chassis">
+            
+            <!-- NOTCH -->
+            <div class="phone-notch">
+                <div class="notch-camera"></div>
+                <div class="notch-speaker"></div>
+            </div>
+
+            <!-- STATUS BAR -->
+            <div class="status-bar">
+                <div class="status-time" id="status-time">09:41</div>
+                <div class="status-icons">📶 🔋 98%</div>
+            </div>
+
+            <!-- TOAST CONTAINER FOR SIMULATION NOTIFICATIONS -->
+            <div class="toast-container" id="toast-container"></div>
+
+            <!-- MODAL OVERLAYS -->
+            <div class="modal-overlay" id="reset-modal">
+                <div class="modal-card">
+                    <h3>Reset Database?</h3>
+                    <p>Tindakan ini akan mengembalikan data ke kondisi default awal. Semua perubahan akan terhapus secara permanen.</p>
+                    <div class="modal-buttons">
+                        <button class="modal-btn modal-btn-secondary" onclick="closeModal('reset-modal')">Batal</button>
+                        <button class="modal-btn modal-btn-primary" onclick="resetDatabase()">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN HEADERS (TITLES ARE DYNAMICALLY CONTROLLED) -->
+            <div class="screen-header" id="screen-header" style="display: none;">
+                <div class="screen-title" id="screen-title">Dashboard Utama</div>
+            </div>
+
+            <!-- SCREEN CONTENT BODIES -->
+            <div class="screen-body" id="screen-body">
+                <!-- Pages are dynamically loaded here -->
+            </div>
+
+            <!-- BOTTOM NAVIGATION BAR -->
+            <div class="bottom-nav" id="bottom-nav" style="display: none;">
+                <div class="nav-item active" onclick="switchTab('home')" id="nav-home">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-label">Home</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('tracker')" id="nav-tracker">
+                    <span class="nav-icon">📝</span>
+                    <span class="nav-label">Tracker</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('keuangan')" id="nav-keuangan">
+                    <span class="nav-icon">💰</span>
+                    <span class="nav-label">Keuangan</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('laporan')" id="nav-laporan">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label">Laporan</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('setel')" id="nav-setel">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-label">Setel</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CODE LOGIC FOR CONTROLLING VIEW & DATA -->
+    <script>
+        // --- DATA LAYER (LOCAL STORAGE PERSISTENCE) ---
+        const DB_KEY = "pena_db";
+        const SESSION_KEY = "pena_current_user_email";
+        
+        const defaultDB = {
+            users: {
+                "firzal@pena.com": {
+                    "name": "Firzal Akbar Ramadhan",
+                    "password": "123",
+                    "level": 18,
+                    "exp": 450,
+                    "streak": 5,
+                    "budget_limit": 1500000,
+                    "reminders_enabled": true,
+                    "reminder_time": "19:30"
+                },
+                "rian@pena.com": {
+                    "name": "Rian M.",
+                    "password": "123",
+                    "level": 25,
+                    "exp": 850,
+                    "streak": 14,
+                    "budget_limit": 2000000,
+                    "reminders_enabled": true,
+                    "reminder_time": "19:00"
+                },
+                "amel@pena.com": {
+                    "name": "Amel",
+                    "password": "123",
+                    "level": 15,
+                    "exp": 120,
+                    "streak": 3,
+                    "budget_limit": 1000000,
+                    "reminders_enabled": false,
+                    "reminder_time": "20:00"
+                },
+                "budi@pena.com": {
+                    "name": "Budi Hartono",
+                    "password": "123",
+                    "level": 12,
+                    "exp": 200,
+                    "streak": 2,
+                    "budget_limit": 1200000,
+                    "reminders_enabled": true,
+                    "reminder_time": "19:30"
+                },
+                "sarah@pena.com": {
+                    "name": "Sarah Wijaya",
+                    "password": "123",
+                    "level": 10,
+                    "exp": 500,
+                    "streak": 1,
+                    "budget_limit": 1500000,
+                    "reminders_enabled": true,
+                    "reminder_time": "18:30"
+                },
+                "dimas@pena.com": {
+                    "name": "Dimas Pratama",
+                    "password": "123",
+                    "level": 9,
+                    "exp": 900,
+                    "streak": 0,
+                    "budget_limit": 800000,
+                    "reminders_enabled": false,
+                    "reminder_time": "20:30"
+                }
+            },
+            activities: [
+                {email: "firzal@pena.com", title: "Jogging Pagi", category: "Olahraga", status: "completed", exp_rewarded: 50, date: "2026-06-21"},
+                {email: "firzal@pena.com", title: "Kuliah APPL", category: "Akademik", status: "pending", exp_rewarded: 50, date: "2026-06-21"},
+                {email: "firzal@pena.com", title: "Mengerjakan Freelance", category: "Kerja", status: "pending", exp_rewarded: 50, date: "2026-06-21"},
+                {email: "firzal@pena.com", title: "Belajar Piano", category: "Hobi", status: "pending", exp_rewarded: 50, date: "2026-06-21"}
+            ],
+            categories: [
+                {email: "firzal@pena.com", name: "Olahraga", color: "#6366f1"},
+                {email: "firzal@pena.com", name: "Akademik", color: "#f59e0b"},
+                {email: "firzal@pena.com", name: "Kerja", color: "#10b981"},
+                {email: "firzal@pena.com", name: "Hobi", color: "#ec4899"}
+            ],
+            finances: [
+                {email: "firzal@pena.com", type: "Sink", amount: 50000, category: "Makanan & Minuman", description: "Makan malam nasi goreng", date: "2026-06-21"},
+                {email: "firzal@pena.com", type: "Sink", amount: 800000, category: "Kebutuhan Akademik", description: "Beli Buku Referensi", date: "2026-06-20"},
+                {email: "firzal@pena.com", type: "Sink", amount: 400000, category: "Transportasi", description: "Isi Saldo MRT", date: "2026-06-19"},
+                {email: "firzal@pena.com", type: "Gain", amount: 1500000, category: "Lain-lain", description: "Uang Saku Bulanan", date: "2026-06-01"}
+            ],
+            user_badges: [
+                {email: "firzal@pena.com", badge: "Pemula", unlocked_at: "2026-06-01"},
+                {email: "firzal@pena.com", badge: "Disiplin", unlocked_at: "2026-06-10"},
+                {email: "firzal@pena.com", badge: "Hemat", unlocked_at: "2026-06-15"}
+            ]
+        };
+
+        let db = {};
+        let currentUserEmail = "";
+        let currentActiveTab = "home";
+
+        // Load DB from LocalStorage or Load Defaults
+        function initDB() {
+            const localData = localStorage.getItem(DB_KEY);
+            if (!localData) {
+                db = JSON.parse(JSON.stringify(defaultDB));
+                localStorage.setItem(DB_KEY, JSON.stringify(db));
+            } else {
+                db = JSON.parse(localData);
+            }
+            currentUserEmail = localStorage.getItem(SESSION_KEY) || "";
+        }
+
+        function saveDB() {
+            localStorage.setItem(DB_KEY, JSON.stringify(db));
+        }
+
+        // Live Clock Updates for Mockup
+        function updateClock() {
+            const timeEl = document.getElementById("status-time");
+            const now = new Date();
+            let hours = now.getHours().toString().padStart(2, '0');
+            let minutes = now.getMinutes().toString().padStart(2, '0');
+            timeEl.innerText = `${hours}:${minutes}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Toast Messages
+        function showToast(text, type = "info") {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = `toast-msg ${type}`;
+            
+            let icon = "🔔";
+            if (type === "success") icon = "🎉";
+            if (type === "danger") icon = "⚠️";
+            
+            toast.innerHTML = `<span>${icon}</span> <span>${text}</span>`;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Confetti Celebration
+        function triggerConfetti() {
+            const chassis = document.querySelector(".phone-chassis");
+            const colors = [ "#6366f1", "#10b981", "#f59e0b", "#ec4899", "#a855f7" ];
+            
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement("div");
+                p.className = "particle";
+                p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                p.style.left = Math.random() * 320 + "px";
+                p.style.top = "0px";
+                p.style.animationDelay = Math.random() * 0.5 + "s";
+                p.style.width = Math.random() * 6 + 4 + "px";
+                p.style.height = p.style.width;
+                chassis.appendChild(p);
+                
+                setTimeout(() => p.remove(), 2000);
+            }
+        }
+
+        // Balloons Celebration
+        function triggerBalloons() {
+            const chassis = document.querySelector(".phone-chassis");
+            const colors = [ "#6366f1", "#10b981", "#f59e0b", "#ec4899", "#a855f7" ];
+            
+            for (let i = 0; i < 15; i++) {
+                const b = document.createElement("div");
+                b.className = "balloon";
+                b.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                b.style.color = b.style.backgroundColor;
+                b.style.left = Math.random() * 280 + 20 + "px";
+                b.style.animationDelay = Math.random() * 0.8 + "s";
+                b.style.transform = `scale(${Math.random() * 0.5 + 0.8})`;
+                chassis.appendChild(b);
+                
+                setTimeout(() => b.remove(), 3500);
+            }
+        }
+
+        // --- AUTH LOGIC ---
+        let currentAuthTab = "login";
+        
+        function renderAuthPage() {
+            document.getElementById("screen-header").style.display = "none";
+            document.getElementById("bottom-nav").style.display = "none";
+            
+            const body = document.getElementById("screen-body");
+            
+            let authHTML = `
+                <div class="auth-container">
+                    <div class="auth-logo">
+                        <h1>Pena</h1>
+                        <p>Gamified Productivity & Personal Finance Manager</p>
+                    </div>
+                    
+                    <div class="auth-tabs">
+                        <div class="auth-tab ${currentAuthTab === 'login' ? 'active' : ''}" onclick="toggleAuthTab('login')">🔒 Masuk Ke Akun</div>
+                        <div class="auth-tab ${currentAuthTab === 'register' ? 'active' : ''}" onclick="toggleAuthTab('register')">👤 Daftar Baru</div>
+                    </div>
+            `;
+            
+            if (currentAuthTab === "login") {
+                authHTML += `
+                    <form id="auth-form" onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label>Alamat Email</label>
+                            <input type="email" class="form-input" id="auth-email" required placeholder="name@email.com">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 24px;">
+                            <label>Kata Sandi</label>
+                            <input type="password" class="form-input" id="auth-password" required placeholder="******">
+                        </div>
+                        <button type="submit" class="btn">Masuk</button>
+                    </form>
+                    <a class="btn-text-link" onclick="fillMockLogin()">Gunakan Akun Simulasi (Firzal)</a>
+                `;
+            } else {
+                authHTML += `
+                    <form id="auth-form" onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label>Nama Lengkap</label>
+                            <input type="text" class="form-input" id="reg-name" required placeholder="Firzal Akbar">
+                        </div>
+                        <div class="form-group">
+                            <label>Alamat Email</label>
+                            <input type="email" class="form-input" id="reg-email" required placeholder="name@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Kata Sandi Baru</label>
+                            <input type="password" class="form-input" id="reg-pass" required placeholder="******">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 24px;">
+                            <label>Limit Anggaran Bulanan (Rp)</label>
+                            <input type="number" class="form-input" id="reg-budget" required value="1500000" min="10000">
+                        </div>
+                        <button type="submit" class="btn">Daftar Sekarang</button>
+                    </form>
+                `;
+            }
+            
+            authHTML += `</div>`;
+            body.innerHTML = authHTML;
+        }
+
+        function toggleAuthTab(tab) {
+            currentAuthTab = tab;
+            renderAuthPage();
+        }
+
+        function fillMockLogin() {
+            if (currentAuthTab === "login") {
+                document.getElementById("auth-email").value = "firzal@pena.com";
+                document.getElementById("auth-password").value = "123";
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById("auth-email").value.trim();
+            const pass = document.getElementById("auth-password").value;
+            
+            if (db.users[email] && db.users[email].password === pass) {
+                currentUserEmail = email;
+                localStorage.setItem(SESSION_KEY, email);
+                showToast(`Selamat datang kembali, ${db.users[email].name}! 👋`, "success");
+                triggerConfetti();
+                
+                // Show core layout
+                document.getElementById("screen-header").style.display = "flex";
+                document.getElementById("bottom-nav").style.display = "flex";
+                
+                switchTab("home");
+            } else {
+                showToast("Email atau password salah. Coba lagi.", "danger");
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById("reg-name").value.trim();
+            const email = document.getElementById("reg-email").value.trim();
+            const pass = document.getElementById("reg-pass").value;
+            const budget = parseFloat(document.getElementById("reg-budget").value);
+            
+            if (db.users[email]) {
+                showToast("Alamat email sudah terdaftar.", "danger");
+                return;
+            }
+            
+            // Add user
+            db.users[email] = {
+                name: name,
+                password: pass,
+                level: 1,
+                exp: 0,
+                streak: 0,
+                budget_limit: budget,
+                reminders_enabled: true,
+                reminder_time: "19:30"
+            };
+            
+            // Add default categories for user
+            db.categories.push(
+                {email: email, name: "Olahraga", color: "#6366f1"},
+                {email: email, name: "Akademik", color: "#f59e0b"},
+                {email: email, name: "Kerja", color: "#10b981"},
+                {email: email, name: "Hobi", color: "#ec4899"}
+            );
+            
+            // Unlocked first badge
+            db.user_badges.push({
+                email: email,
+                badge: "Pemula",
+                unlocked_at: new Date().toISOString().split('T')[0]
+            });
+            
+            saveDB();
+            currentUserEmail = email;
+            localStorage.setItem(SESSION_KEY, email);
+            showToast(`Pendaftaran sukses! Selamat datang, ${name}! 👋`, "success");
+            triggerConfetti();
+            
+            // Show core layout
+            document.getElementById("screen-header").style.display = "flex";
+            document.getElementById("bottom-nav").style.display = "flex";
+            
+            switchTab("home");
+        }
+
+        // --- NAVIGATION LOGIC ---
+        function switchTab(tab) {
+            currentActiveTab = tab;
+            
+            // Highlight nav tabs
+            document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
+            document.getElementById(`nav-${tab}`).classList.add("active");
+            
+            // Render specific page
+            const headerTitle = document.getElementById("screen-title");
+            
+            if (tab === "home") {
+                headerTitle.innerText = "Dashboard Utama";
+                renderHomePage();
+            } else if (tab === "tracker") {
+                headerTitle.innerText = "Pelacakan Aktivitas";
+                renderTrackerPage();
+            } else if (tab === "keuangan") {
+                headerTitle.innerText = "Manajemen Keuangan";
+                renderFinancePage();
+            } else if (tab === "laporan") {
+                headerTitle.innerText = "Analitik & Grafik";
+                renderAnalyticsPage();
+            } else if (tab === "setel") {
+                headerTitle.innerText = "Pengaturan & Akun";
+                renderSettingsPage();
+            }
+            
+            // Scroll body back to top
+            document.getElementById("screen-body").scrollTop = 0;
+        }
+
+        // --- DASHBOARD (HOME) PAGE ---
+        function renderHomePage() {
+            const user = db.users[currentUserEmail];
+            const body = document.getElementById("screen-body");
+            
+            // Check reminders & pending tasks
+            const todayStr = new Date().toISOString().split('T')[0];
+            const todayTasks = db.activities.filter(a => a.email === currentUserEmail && a.date === todayStr);
+            const pendingTasks = todayTasks.filter(a => a.status === "pending");
+            
+            let alertHTML = "";
+            if (user.reminders_enabled && pendingTasks.length > 0) {
+                alertHTML = `
+                    <div class="alert-banner alert-banner-warning">
+                        🔔 <span><strong>Simulasi Pengingat:</strong> Kamu memiliki ${pendingTasks.length} aktivitas yang belum diselesaikan hari ini! Jangan biarkan streak harianmu putus.</span>
+                    </div>
+                `;
+            }
+            
+            // Budget Summary Calculations
+            const monthStr = new Date().toISOString().substring(0, 7); // YYYY-MM
+            const userSinks = db.finances.filter(f => f.email === currentUserEmail && f.type === "Sink" && f.date.startsWith(monthStr));
+            const userGains = db.finances.filter(f => f.email === currentUserEmail && f.type === "Gain" && f.date.startsWith(monthStr));
+            const totalSpent = userSinks.reduce((sum, f) => sum + f.amount, 0);
+            const totalGain = userGains.reduce((sum, f) => sum + f.amount, 0);
+            const remainingBudget = user.budget_limit - totalSpent + totalGain;
+            
+            let budgetColor = "var(--color-green)";
+            if (remainingBudget < 0) {
+                budgetColor = "var(--color-red)";
+                alertHTML += `
+                    <div class="alert-banner">
+                        ⚠️ <span><strong>Overbudget Alarm:</strong> Pengeluaranmu melampaui limit anggaran berjalan sebesar Rp ${Math.abs(remainingBudget).toLocaleString('id-ID')}!</span>
+                    </div>
+                `;
+            } else if (remainingBudget < (0.1 * user.budget_limit)) {
+                budgetColor = "var(--color-amber)";
+                alertHTML += `
+                    <div class="alert-banner alert-banner-warning">
+                        ⚠️ <span><strong>Peringatan Anggaran:</strong> Sisa saldo belanja kritis (kurang dari 10% limit bulanan)!</span>
+                    </div>
+                `;
+            }
+            
+            // EXP Calculations
+            const expTarget = user.level * 100;
+            const expPct = Math.min(100, Math.floor((user.exp / expTarget) * 100));
+            
+            // Badges list
+            const userBadges = db.user_badges.filter(b => b.email === currentUserEmail).map(b => b.badge);
+            
+            let html = `
+                ${alertHTML}
+                
+                <!-- PROFILE HEADER CARD -->
+                <div class="card" style="margin-bottom: 12px; display: flex; align-items: center; gap: 14px;">
+                    <div class="podium-avatar" style="width: 44px; height: 44px; font-size: 14px; border-color: var(--color-accent); flex-shrink:0;">
+                        ${user.name.substring(0, 2).toUpperCase()}
+                    </div>
+                    <div style="flex: 1; min-width:0;">
+                        <h4 style="font-family: 'Outfit'; font-size:13px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${user.name}</h4>
+                        <p style="font-size:9px; color:var(--text-muted); font-weight:500;">${currentUserEmail}</p>
+                    </div>
+                </div>
+
+                <!-- EXP BAR CARD -->
+                <div class="card" style="margin-bottom: 12px;">
+                    <div class="card-title">🎖️ Level & Progress EXP</div>
+                    <div class="exp-progress-container">
+                        <div class="exp-label-row">
+                            <span class="exp-lvl">Level ${user.level}</span>
+                            <span class="exp-val">${user.exp}/${expTarget} EXP</span>
+                        </div>
+                        <div class="exp-bar-bg">
+                            <div class="exp-bar-fill" style="width: ${expPct}%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STREAK & BUDGET STATUS GRID -->
+                <div class="dashboard-stats-grid">
+                    <div class="dashboard-stat-card">
+                        <div class="card-title" style="margin-bottom:4px;">🔥 Streak</div>
+                        <div class="stat-value" style="color: var(--color-pink);">${user.streak} Hari</div>
+                        <div class="stat-desc">Konsistensi catat berturut-turut</div>
+                    </div>
+                    <div class="dashboard-stat-card">
+                        <div class="card-title" style="margin-bottom:4px;">💰 Sisa Saldo</div>
+                        <div class="stat-value" style="color: ${budgetColor}; font-size:14px; margin-top:3px;">Rp ${remainingBudget.toLocaleString('id-ID', {maximumFractionDigits:0})}</div>
+                        <div class="stat-desc">Limit: Rp ${user.budget_limit.toLocaleString('id-ID', {maximumFractionDigits:0})}</div>
+                    </div>
+                </div>
+
+                <!-- TODAY ACTIVITIES CHECKLIST -->
+                <div class="section-header-text">Checklist Hari Ini</div>
+                <div class="task-list">
+            `;
+            
+            if (todayTasks.length === 0) {
+                html += `<div style="font-size:10px; color:var(--text-muted); text-align:center; padding: 20px 0; border:1px dashed var(--border-card); border-radius:8px;">
+                            Kamu belum menambahkan kegiatan harian.<br>Pergi ke tab <strong>Tracker</strong> untuk menambah!
+                         </div>`;
+            } else {
+                todayTasks.forEach((task, idx) => {
+                    const isCompleted = task.status === "completed";
+                    const catColors = db.categories.filter(c => c.email === currentUserEmail);
+                    const matchedCat = catColors.find(c => c.name === task.category);
+                    const colorCode = matchedCat ? matchedCat.color : "var(--color-accent)";
+                    
+                    html += `
+                        <div class="task-item ${isCompleted ? 'completed' : ''}">
+                            <div class="task-left">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" ${isCompleted ? 'checked' : ''} onchange="toggleTaskStatus(${idx}, this.checked)">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <div class="task-details">
+                                    <div class="task-title">${task.title}</div>
+                                    <div class="task-category" style="color: ${colorCode}; font-weight:bold;">${task.category}</div>
+                                </div>
+                            </div>
+                            <div class="exp-tag">+50 EXP</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            html += `
+                </div>
+
+                <!-- MILESTONE BADGES -->
+                <div class="section-header-text">Lencana Milestone</div>
+                <div class="badges-horizontal-container">
+                    <div class="badge-gallery-card ${userBadges.includes("Pemula") ? "" : "locked"}" onclick="showBadgeToast('Pemula', '${userBadges.includes("Pemula")}')">
+                        <div class="badge-icon">🏅</div>
+                        <div class="badge-name" style="color: var(--color-amber);">Pemula</div>
+                        ${userBadges.includes("Pemula") ? '<button class="badge-share-btn" onclick="shareBadge(\'Pemula\', event)">Bagikan</button>' : ''}
+                    </div>
+                    <div class="badge-gallery-card ${userBadges.includes("Disiplin") ? "" : "locked"}" onclick="showBadgeToast('Disiplin', '${userBadges.includes("Disiplin")}')">
+                        <div class="badge-icon">🏆</div>
+                        <div class="badge-name" style="color: var(--color-green);">Disiplin</div>
+                        ${userBadges.includes("Disiplin") ? '<button class="badge-share-btn" onclick="shareBadge(\'Disiplin\', event)">Bagikan</button>' : ''}
+                    </div>
+                    <div class="badge-gallery-card ${userBadges.includes("Hemat") ? "" : "locked"}" onclick="showBadgeToast('Hemat', '${userBadges.includes("Hemat")}')">
+                        <div class="badge-icon">💎</div>
+                        <div class="badge-name" style="color: var(--color-accent);">Hemat</div>
+                        ${userBadges.includes("Hemat") ? '<button class="badge-share-btn" onclick="shareBadge(\'Hemat\', event)">Bagikan</button>' : ''}
+                    </div>
+                    <div class="badge-gallery-card ${userBadges.includes("Master") ? "" : "locked"}" onclick="showBadgeToast('Master', '${userBadges.includes("Master")}')">
+                        <div class="badge-icon">👑</div>
+                        <div class="badge-name" style="color: var(--color-purple);">Master</div>
+                        ${userBadges.includes("Master") ? '<button class="badge-share-btn" onclick="shareBadge(\'Master\', event)">Bagikan</button>' : ''}
+                    </div>
+                </div>
+            `;
+            
+            body.innerHTML = html;
+        }
+
+        // Checklist Status toggler
+        function toggleTaskStatus(idx, checked) {
+            const todayStr = new Date().toISOString().split('T')[0];
+            const userTodayTasks = db.activities.filter(a => a.email === currentUserEmail && a.date === todayStr);
+            const task = userTodayTasks[idx];
+            
+            // Find global index
+            const globalIdx = db.activities.findIndex(a => a.email === currentUserEmail && a.date === todayStr && a.title === task.title);
+            
+            if (globalIdx === -1) return;
+            
+            const user = db.users[currentUserEmail];
+            
+            if (checked) {
+                db.activities[globalIdx].status = "completed";
+                user.exp += 50;
+                showToast(`Hebat! +50 EXP didapat dari "${task.title}"! 🎉`, "success");
+                triggerConfetti();
+                
+                // Level Up Check
+                const expTarget = user.level * 100;
+                if (user.exp >= expTarget) {
+                    user.level += 1;
+                    user.exp -= expTarget;
+                    showToast(`🎊 SELAMAT! Kamu naik ke Level ${user.level}! 🎊`, "success");
+                    triggerBalloons();
+                    
+                    // Master Badge (Level >= 20) Check
+                    const hasMaster = db.user_badges.some(b => b.email === currentUserEmail && b.badge === "Master");
+                    if (user.level >= 20 && !hasMaster) {
+                        db.user_badges.push({
+                            email: currentUserEmail,
+                            badge: "Master",
+                            unlocked_at: todayStr
+                        });
+                        showToast("👑 Lencana 'Master' Berhasil Terbuka!", "success");
+                    }
+                }
+                
+                // Daily Streak calculation
+                const completedTodayCount = db.activities.filter(a => a.email === currentUserEmail && a.date === todayStr && a.status === "completed").length;
+                if (completedTodayCount === 1) { // First task completed today
+                    user.streak += 1;
+                    showToast(`Streak-mu naik menjadi ${user.streak} hari berturut-turut! 🔥`, "success");
+                    
+                    // Disiplin Badge (Streak >= 3) Check
+                    const hasDisiplin = db.user_badges.some(b => b.email === currentUserEmail && b.badge === "Disiplin");
+                    if (user.streak >= 3 && !hasDisiplin) {
+                        db.user_badges.push({
+                            email: currentUserEmail,
+                            badge: "Disiplin",
+                            unlocked_at: todayStr
+                        });
+                        showToast("🏆 Lencana 'Disiplin' Berhasil Terbuka!", "success");
+                    }
+                }
+            } else {
+                db.activities[globalIdx].status = "pending";
+                user.exp = Math.max(0, user.exp - 50);
+                showToast("Status diubah ke pending. -50 EXP.");
+                // Streak decrement / validation isn't automatically rolled back to prevent complexity
+            }
+            
+            saveDB();
+            renderHomePage();
+        }
+
+        function showBadgeToast(badgeName, isUnlockedStr) {
+            const isUnlocked = isUnlockedStr === "true";
+            let desc = "";
+            
+            if (badgeName === "Pemula") desc = "Pertama kali bergabung dengan Pena.";
+            else if (badgeName === "Disiplin") desc = "Pertahankan streak mencatat 3 hari.";
+            else if (badgeName === "Hemat") desc = "Sisa saldo keuangan bulan ini > 20% limit.";
+            else if (badgeName === "Master") desc = "Capai tingkat Level 20.";
+            
+            if (isUnlocked) {
+                showToast(`🏅 Lencana '${badgeName}' Unlocked! Syarat: ${desc}`, "success");
+            } else {
+                showToast(`🔒 Lencana '${badgeName}' Terkunci. Syarat: ${desc}`, "info");
+            }
+        }
+
+        function shareBadge(badgeName, event) {
+            event.stopPropagation();
+            showToast(`📢 Lencana '${badgeName}' berhasil dibagikan ke Media Sosial Anda!`, "success");
+            triggerBalloons();
+        }
+
+        // --- TRACKER PAGE ---
+        function renderTrackerPage() {
+            const body = document.getElementById("screen-body");
+            const userCats = db.categories.filter(c => c.email === currentUserEmail);
+            
+            const todayStr = new Date().toISOString().split('T')[0];
+            const todayTasks = db.activities.filter(a => a.email === currentUserEmail && a.date === todayStr);
+            
+            let catOptions = userCats.map(c => `<option value="${c.name}">${c.name}</option>`).join("");
+            
+            let html = `
+                <!-- QUICK ADD FORM -->
+                <div class="card">
+                    <div class="card-title">📝 Tambah Kegiatan Baru</div>
+                    <form onsubmit="handleAddTask(event)">
+                        <div class="form-group">
+                            <label>Judul Kegiatan</label>
+                            <input type="text" class="form-input" id="track-title" required placeholder="Contoh: Belajar APPL...">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 18px;">
+                            <label>Pilih Kategori</label>
+                            <select class="form-select" id="track-category">
+                                ${catOptions}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn">+ Tambah Kegiatan</button>
+                    </form>
+                </div>
+
+                <!-- CATEGORIES LIST ROW -->
+                <div class="section-header-text" style="margin-top:8px;">Kategori Aktivitas</div>
+                <div class="categories-chips-row">
+            `;
+            
+            userCats.forEach(c => {
+                html += `
+                    <div class="category-chip active" style="border-color:${c.color}; color:${c.color}; background-color: rgba(${hexToRgb(c.color)}, 0.08);">
+                        <span>●</span> ${c.name}
+                    </div>
+                `;
+            });
+            
+            html += `
+                </div>
+
+                <!-- ADD CUSTOM CATEGORY -->
+                <div class="card">
+                    <div class="card-title">🎨 Kelola Kategori Kustom</div>
+                    <form onsubmit="handleAddCategory(event)">
+                        <div class="form-group">
+                            <label>Nama Kategori</label>
+                            <input type="text" class="form-input" id="cat-name" required placeholder="Contoh: Spiritual...">
+                        </div>
+                        <div class="form-group" style="margin-bottom:18px;">
+                            <label>Pilih Warna Label</label>
+                            <div class="color-picker-wrapper">
+                                <input type="color" class="color-picker-input" id="cat-color" value="#a855f7">
+                                <span style="font-size:11px; color:var(--text-muted); font-weight:500;">Pilih warna visual label</span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn" style="background:var(--bg-card); border:1px solid var(--border-card); color:var(--text-main); box-shadow:none;">Simpan Kategori</button>
+                    </form>
+                </div>
+
+                <!-- TODAY'S LOGS LIST -->
+                <div class="section-header-text">Checklist Kegiatan Hari Ini</div>
+                <div class="task-list">
+            `;
+            
+            if (todayTasks.length === 0) {
+                html += `<div style="font-size:10px; color:var(--text-muted); text-align:center; padding: 20px 0; border:1px dashed var(--border-card); border-radius:8px;">
+                            Belum ada kegiatan harian untuk hari ini.
+                         </div>`;
+            } else {
+                todayTasks.forEach((task, idx) => {
+                    const isCompleted = task.status === "completed";
+                    const matchedCat = userCats.find(c => c.name === task.category);
+                    const colorCode = matchedCat ? matchedCat.color : "var(--color-accent)";
+                    
+                    html += `
+                        <div class="task-item ${isCompleted ? 'completed' : ''}">
+                            <div class="task-left">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" ${isCompleted ? 'checked' : ''} onchange="toggleTaskStatusTracker(${idx}, this.checked)">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <div class="task-details">
+                                    <div class="task-title">${task.title}</div>
+                                    <div class="task-category" style="color: ${colorCode}; font-weight:bold;">${task.category}</div>
+                                </div>
+                            </div>
+                            <div class="exp-tag">+50 EXP</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            html += `</div>`;
+            body.innerHTML = html;
+        }
+
+        // Helper color converter
+        function hexToRgb(hex) {
+            hex = hex.replace('#', '');
+            if (hex.length === 3) {
+                hex = hex.split('').map(char => char + char).join('');
+            }
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
+            return `${r}, ${g}, ${b}`;
+        }
+
+        function handleAddTask(e) {
+            e.preventDefault();
+            const title = document.getElementById("track-title").value.trim();
+            const category = document.getElementById("track-category").value;
+            const todayStr = new Date().toISOString().split('T')[0];
+            
+            db.activities.push({
+                email: currentUserEmail,
+                title: title,
+                category: category,
+                status: "pending",
+                exp_rewarded: 50,
+                date: todayStr
+            });
+            
+            saveDB();
+            showToast(`Kegiatan "${title}" berhasil ditambahkan!`, "success");
+            renderTrackerPage();
+        }
+
+        function handleAddCategory(e) {
+            e.preventDefault();
+            const catName = document.getElementById("cat-name").value.trim();
+            const catColor = document.getElementById("cat-color").value;
+            
+            const userCats = db.categories.filter(c => c.email === currentUserEmail);
+            if (userCats.some(c => c.name.toLowerCase() === catName.toLowerCase())) {
+                showToast("Nama kategori sudah terdaftar.", "danger");
+                return;
+            }
+            
+            db.categories.push({
+                email: currentUserEmail,
+                name: catName,
+                color: catColor
+            });
+            
+            saveDB();
+            showToast(`Kategori "${catName}" berhasil ditambahkan!`, "success");
+            renderTrackerPage();
+        }
+
+        function toggleTaskStatusTracker(idx, checked) {
+            // Re-uses global checklist toggle logic but refreshes the tracker page
+            const todayStr = new Date().toISOString().split('T')[0];
+            const userTodayTasks = db.activities.filter(a => a.email === currentUserEmail && a.date === todayStr);
+            const task = userTodayTasks[idx];
+            const globalIdx = db.activities.findIndex(a => a.email === currentUserEmail && a.date === todayStr && a.title === task.title);
+            
+            if (globalIdx === -1) return;
+            const user = db.users[currentUserEmail];
+            
+            if (checked) {
+                db.activities[globalIdx].status = "completed";
+                user.exp += 50;
+                showToast(`Hebat! +50 EXP didapat! 🎉`, "success");
+                triggerConfetti();
+                
+                // Level Check
+                const expTarget = user.level * 100;
+                if (user.exp >= expTarget) {
+                    user.level += 1;
+                    user.exp -= expTarget;
+                    showToast(`🎊 SELAMAT! Kamu naik ke Level ${user.level}! 🎊`, "success");
+                    triggerBalloons();
+                }
+                
+                // Streak check
+                const completedTodayCount = db.activities.filter(a => a.email === currentUserEmail && a.date === todayStr && a.status === "completed").length;
+                if (completedTodayCount === 1) {
+                    user.streak += 1;
+                    showToast(`Streak naik ke ${user.streak} hari! 🔥`, "success");
+                }
+            } else {
+                db.activities[globalIdx].status = "pending";
+                user.exp = Math.max(0, user.exp - 50);
+                showToast("Status diubah ke pending. -50 EXP.");
+            }
+            
+            saveDB();
+            renderTrackerPage();
+        }
+
+        // --- MANAJEMEN KEUANGAN PAGE ---
+        let currentFinanceTypeTab = "sink"; // default Expense
+
+        function renderFinancePage() {
+            const body = document.getElementById("screen-body");
+            const user = db.users[currentUserEmail];
+            const todayStr = new Date().toISOString().split('T')[0];
+            
+            // Monthly Calculations
+            const monthStr = new Date().toISOString().substring(0, 7);
+            const userSinks = db.finances.filter(f => f.email === currentUserEmail && f.type === "Sink" && f.date.startsWith(monthStr));
+            const userGains = db.finances.filter(f => f.email === currentUserEmail && f.type === "Gain" && f.date.startsWith(monthStr));
+            const totalSpent = userSinks.reduce((sum, f) => sum + f.amount, 0);
+            const totalGain = userGains.reduce((sum, f) => sum + f.amount, 0);
+            const remainingBudget = user.budget_limit - totalSpent + totalGain;
+            
+            let alertHTML = "";
+            let balanceColor = "var(--color-green)";
+            if (remainingBudget < 0) {
+                balanceColor = "var(--color-red)";
+                alertHTML = `
+                    <div class="alert-banner">
+                        ⚠️ <span><strong>ALARM OVERBUDGET:</strong> Belanja bulanan melampaui limit anggaran! Defisit sebesar Rp ${Math.abs(remainingBudget).toLocaleString('id-ID')}. Kendalikan uang Anda!</span>
+                    </div>
+                `;
+            } else if (remainingBudget < (0.1 * user.budget_limit)) {
+                balanceColor = "var(--color-amber)";
+                alertHTML = `
+                    <div class="alert-banner alert-banner-warning">
+                        ⚠️ <span><strong>ANGGARAN KRITIS:</strong> Sisa dana kurang dari 10% limit bulanan!</span>
+                    </div>
+                `;
+            }
+            
+            // Transaction History list
+            const userTx = db.finances.filter(f => f.email === currentUserEmail);
+            userTx.sort((a,b) => new Date(b.date) - new Date(a.date)); // Sort newest first
+            const displayTx = userTx.slice(0, 8); // top 8
+            
+            let html = `
+                ${alertHTML}
+
+                <!-- BUDGET SUMMARY BOX -->
+                <div class="card finance-summary-card">
+                    <div class="card-title">💳 Ringkasan Anggaran Bulanan</div>
+                    <div style="font-size:10px; color:var(--text-muted); font-weight:500;">Sisa Anggaran Belanja</div>
+                    <h2 style="font-family:'Outfit'; font-size:20px; color:${balanceColor}; margin:4px 0 10px 0;">Rp ${remainingBudget.toLocaleString('id-ID', {maximumFractionDigits:0})}</h2>
+                    
+                    <div style="display:flex; justify-content:space-between; border-top:1px solid #2e3248; padding-top:10px;">
+                        <div>
+                            <div style="font-size:8px; color:var(--text-muted);">Limit Pengeluaran</div>
+                            <div style="font-size:11px; font-weight:bold;">Rp ${user.budget_limit.toLocaleString('id-ID', {maximumFractionDigits:0})}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:8px; color:var(--text-muted);">Total Pengeluaran (Sink)</div>
+                            <div style="font-size:11px; font-weight:bold; color:var(--color-red);">Rp ${totalSpent.toLocaleString('id-ID', {maximumFractionDigits:0})}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADD TRANSACTION FORM -->
+                <div class="card">
+                    <div class="card-title">💸 Catat Transaksi Baru</div>
+                    
+                    <div class="segmented-tabs" style="margin-bottom:14px;">
+                        <div class="segmented-tab ${currentFinanceTypeTab === 'gain' ? 'active' : ''}" onclick="toggleFinanceTypeTab('gain')">Pemasukan (Gain)</div>
+                        <div class="segmented-tab ${currentFinanceTypeTab === 'sink' ? 'active' : ''}" onclick="toggleFinanceTypeTab('sink')">Pengeluaran (Sink)</div>
+                    </div>
+                    
+                    <form onsubmit="handleAddTransaction(event)">
+                        <div class="form-group">
+                            <label>Nominal Transaksi (Rupiah)</label>
+                            <input type="number" class="form-input" id="tx-amount" required value="50000" min="100">
+                        </div>
+                        <div class="form-group">
+                            <label>Kategori Anggaran</label>
+                            <select class="form-select" id="tx-category">
+                                <option value="Makanan & Minuman">Makanan & Minuman</option>
+                                <option value="Transportasi">Transportasi</option>
+                                <option value="Kebutuhan Akademik">Kebutuhan Akademik</option>
+                                <option value="Hobi & Hiburan">Hobi & Hiburan</option>
+                                <option value="Lain-lain">Lain-lain</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom:18px;">
+                            <label>Keterangan Singkat</label>
+                            <input type="text" class="form-input" id="tx-desc" required placeholder="Contoh: Makan malam nasi goreng...">
+                        </div>
+                        
+                        <div id="tx-warn-indicator" style="display:none; font-size:8.5px; color:var(--color-red); font-weight:bold; margin-bottom:12px;">
+                            ⚠️ Perhatian: Transaksi ini mendekati atau melampaui limit anggaran bulanan Anda!
+                        </div>
+                        
+                        <button type="submit" class="btn" style="background:linear-gradient(135deg, #6366f1 0%, #7c3aed 100%)">Simpan Transaksi</button>
+                    </form>
+                </div>
+
+                <!-- TRANSACTION HISTORY -->
+                <div class="section-header-text">Riwayat Transaksi Keuangan</div>
+                <div class="card" style="padding:4px 16px;">
+            `;
+            
+            if (displayTx.length === 0) {
+                html += `<div style="font-size:10px; color:var(--text-muted); text-align:center; padding: 20px 0;">
+                            Belum ada riwayat transaksi dicatat.
+                         </div>`;
+            } else {
+                displayTx.forEach(tx => {
+                    const isSink = tx.type === "Sink";
+                    
+                    html += `
+                        <div class="transaction-row">
+                            <div>
+                                <div class="tx-desc">${tx.description}</div>
+                                <div class="tx-meta">${tx.date} | ${tx.category}</div>
+                            </div>
+                            <div class="tx-amount ${isSink ? 'sink' : 'gain'}">
+                                ${isSink ? '-' : '+'} Rp ${tx.amount.toLocaleString('id-ID', {maximumFractionDigits:0})}
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            html += `</div>`;
+            body.innerHTML = html;
+            
+            // Real-time input checking for overbudget warnings
+            const amtInput = document.getElementById("tx-amount");
+            if (amtInput) {
+                amtInput.addEventListener("input", () => {
+                    const val = parseFloat(amtInput.value) || 0;
+                    const warnEl = document.getElementById("tx-warn-indicator");
+                    if (currentFinanceTypeTab === "sink" && (remainingBudget - val) < 0) {
+                        warnEl.style.display = "block";
+                    } else {
+                        warnEl.style.display = "none";
+                    }
+                });
+                
+                // Initial check
+                const val = parseFloat(amtInput.value) || 0;
+                const warnEl = document.getElementById("tx-warn-indicator");
+                if (currentFinanceTypeTab === "sink" && (remainingBudget - val) < 0) {
+                    warnEl.style.display = "block";
+                }
+            }
+        }
+
+        function toggleFinanceTypeTab(tab) {
+            currentFinanceTypeTab = tab;
+            renderFinancePage();
+        }
+
+        function handleAddTransaction(e) {
+            e.preventDefault();
+            const amount = parseFloat(document.getElementById("tx-amount").value);
+            const category = document.getElementById("tx-category").value;
+            const desc = document.getElementById("tx-desc").value.trim();
+            const todayStr = new Date().toISOString().split('T')[0];
+            
+            db.finances.push({
+                email: currentUserEmail,
+                type: currentFinanceTypeTab === "sink" ? "Sink" : "Gain",
+                amount: amount,
+                category: category,
+                description: desc,
+                date: todayStr
+            });
+            
+            // Check milestone trigger "Hemat" (End balance keeps >20% of limit after transaction)
+            const monthStr = new Date().toISOString().substring(0, 7);
+            const user = db.users[currentUserEmail];
+            const userSinks = db.finances.filter(f => f.email === currentUserEmail && f.type === "Sink" && f.date.startsWith(monthStr));
+            const userGains = db.finances.filter(f => f.email === currentUserEmail && f.type === "Gain" && f.date.startsWith(monthStr));
+            const totalSpent = userSinks.reduce((sum, f) => sum + f.amount, 0);
+            const totalGain = userGains.reduce((sum, f) => sum + f.amount, 0);
+            const remainingBudget = user.budget_limit - totalSpent + totalGain;
+            
+            const hasHematBadge = db.user_badges.some(b => b.email === currentUserEmail && b.badge === "Hemat");
+            if (remainingBudget > (0.2 * user.budget_limit) && !hasHematBadge) {
+                db.user_badges.push({
+                    email: currentUserEmail,
+                    badge: "Hemat",
+                    unlocked_at: todayStr
+                });
+                showToast("💎 Lencana 'Hemat' Berhasil Terbuka!", "success");
+                triggerConfetti();
+            }
+            
+            saveDB();
+            showToast("Transaksi keuangan berhasil disimpan!", "success");
+            renderFinancePage();
+        }
+
+        // --- ANALYTICS PAGE ---
+        let currentAnalyticsTab = "activity"; // default Kinerja Aktivitas
+
+        function renderAnalyticsPage() {
+            const body = document.getElementById("screen-body");
+            
+            let html = `
+                <div class="segmented-tabs" style="margin-bottom: 16px;">
+                    <div class="segmented-tab ${currentAnalyticsTab === 'activity' ? 'active' : ''}" onclick="toggleAnalyticsTab('activity')">Kinerja Aktivitas</div>
+                    <div class="segmented-tab ${currentAnalyticsTab === 'finance' ? 'active' : ''}" onclick="toggleAnalyticsTab('finance')">Laporan Keuangan</div>
+                </div>
+            `;
+            
+            if (currentAnalyticsTab === "activity") {
+                // Generate last 7 days metrics
+                const dates = [];
+                const dayLabels = [];
+                const completionRates = [];
+                
+                for (let i = 6; i >= 0; i--) {
+                    const d = new Date();
+                    d.setDate(d.getDate() - i);
+                    const dStr = d.toISOString().split('T')[0];
+                    dates.push(dStr);
+                    
+                    const days = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+                    dayLabels.push(days[d.getDay()]);
+                    
+                    // Task calculation
+                    const dayTasks = db.activities.filter(a => a.email === currentUserEmail && a.date === dStr);
+                    if (dayTasks.length === 0) {
+                        // default baselines to make chart pretty if new user
+                        completionRates.push(50);
+                    } else {
+                        const done = dayTasks.filter(a => a.status === "completed").length;
+                        const rate = Math.floor((done / dayTasks.length) * 100);
+                        completionRates.push(rate);
+                    }
+                }
+                
+                // Construct dynamic SVG Line Chart
+                // Dimensions: width = 310, height = 120. ViewPort: 0 0 310 120
+                // x coords: 30, 75, 120, 165, 210, 255, 300
+                // y coords (0% is y=100, 100% is y=20)
+                let pointsStr = "";
+                let pointsCirclesHTML = "";
+                
+                completionRates.forEach((rate, idx) => {
+                    const x = 30 + (idx * 45);
+                    const y = 100 - (rate * 80 / 100); // 80px range
+                    
+                    if (idx === 0) pointsStr += `M ${x} ${y}`;
+                    else pointsStr += ` L ${x} ${y}`;
+                    
+                    pointsCirclesHTML += `<circle cx="${x}" cy="${y}" r="3.5" fill="var(--color-accent)" stroke="#ffffff" stroke-width="1.2" />`;
+                });
+                
+                html += `
+                    <div class="section-header-text" style="margin-top:0;">Tren Konsistensi Harian (Mingguan)</div>
+                    <div class="chart-box">
+                        <svg class="chart-svg" viewBox="0 0 320 125">
+                            <!-- Grid lines -->
+                            <line x1="20" y1="20" x2="310" y2="20" stroke="#1f2335" stroke-width="1" />
+                            <line x1="20" y1="60" x2="310" y2="60" stroke="#1f2335" stroke-width="1" />
+                            <line x1="20" y1="100" x2="310" y2="100" stroke="#1f2335" stroke-width="1" />
+                            
+                            <!-- Graph Path -->
+                            <path d="${pointsStr}" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" />
+                            
+                            <!-- Dots -->
+                            ${pointsCirclesHTML}
+                            
+                            <!-- Labels -->
+                            ${dayLabels.map((lbl, idx) => `<text x="${30 + (idx * 45)}" y="118" fill="var(--text-muted)" font-size="8.5" font-weight="bold" text-anchor="middle" font-family="system-ui">${lbl}</text>`).join("")}
+                            
+                            <!-- Y axis markers -->
+                            <text x="15" y="23" fill="var(--text-muted)" font-size="7" text-anchor="end" font-family="system-ui">100%</text>
+                            <text x="15" y="63" fill="var(--text-muted)" font-size="7" text-anchor="end" font-family="system-ui">50%</text>
+                            <text x="15" y="103" fill="var(--text-muted)" font-size="7" text-anchor="end" font-family="system-ui">0%</text>
+                        </svg>
+                    </div>
+                    
+                    <div class="alert-banner alert-banner-warning" style="border-color:var(--color-accent); color:var(--text-main); background:rgba(99,102,241,0.03);">
+                        💡 <span><strong>Tips Konsistensi:</strong> Selesaikan minimal satu tugas harian agar Daily Streak Anda tidak reset ke nol!</span>
+                    </div>
+                `;
+            } else {
+                // Financial Allocations
+                const monthStr = new Date().toISOString().substring(0, 7);
+                const userSinks = db.finances.filter(f => f.email === currentUserEmail && f.type === "Sink" && f.date.startsWith(monthStr));
+                
+                const totalSpent = userSinks.reduce((sum, f) => sum + f.amount, 0);
+                
+                // Grouping expense by category
+                const groups = {
+                    "Makanan & Minuman": 0,
+                    "Transportasi": 0,
+                    "Kebutuhan Akademik": 0,
+                    "Hobi & Hiburan": 0,
+                    "Lain-lain": 0
+                };
+                
+                userSinks.forEach(f => {
+                    if (groups[f.category] !== undefined) {
+                        groups[f.category] += f.amount;
+                    } else {
+                        groups["Lain-lain"] += f.amount;
+                    }
+                });
+                
+                const colors = {
+                    "Makanan & Minuman": "var(--color-accent)",
+                    "Transportasi": "var(--color-green)",
+                    "Kebutuhan Akademik": "var(--color-amber)",
+                    "Hobi & Hiburan": "var(--color-pink)",
+                    "Lain-lain": "var(--color-purple)"
+                };
+                
+                let barsHTML = "";
+                let legendHTML = "";
+                
+                if (totalSpent === 0) {
+                    barsHTML = `<div class="segmented-bar-fill" style="width:100%; background-color:#1b1d2a;"></div>`;
+                    legendHTML = `<div style="font-size:9px; color:var(--text-muted); text-align:center; margin-top:10px;">Belum ada pengeluaran belanja bulan ini.</div>`;
+                } else {
+                    Object.entries(groups).forEach(([name, amt]) => {
+                        if (amt > 0) {
+                            const pct = (amt / totalSpent) * 100;
+                            barsHTML += `<div class="segmented-bar-fill" style="width:${pct}%; background-color:${colors[name]};"></div>`;
+                            legendHTML += `
+                                <div class="legend-item">
+                                    <span class="legend-circle" style="background-color:${colors[name]};"></span>
+                                    <span>${name} (${Math.round(pct)}% - Rp ${amt.toLocaleString('id-ID', {maximumFractionDigits:0})})</span>
+                                </div>
+                            `;
+                        }
+                    });
+                }
+                
+                html += `
+                    <div class="section-header-text" style="margin-top:0;">Alokasi Belanja Bulan Ini</div>
+                    <div class="card">
+                        <div class="segmented-bar-container">
+                            <div class="segmented-bar">
+                                ${barsHTML}
+                            </div>
+                        </div>
+                        
+                        <div class="legend-grid">
+                            ${legendHTML}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            body.innerHTML = html;
+        }
+
+        function toggleAnalyticsTab(tab) {
+            currentAnalyticsTab = tab;
+            renderAnalyticsPage();
+        }
+
+        // --- GLOBAL LEADERBOARD PAGE ---
+        function renderLeaderboardPage() {
+            const body = document.getElementById("screen-body");
+            
+            // Build leader ranking array
+            const leaders = [];
+            Object.entries(db.users).forEach(([email, u]) => {
+                leaders.push({
+                    email: email,
+                    name: u.name,
+                    level: u.level,
+                    exp: u.exp,
+                    score: (u.level * 1000) + u.exp
+                });
+            });
+            
+            leaders.sort((a,b) => b.score - a.score);
+            
+            // Top 3 Podium
+            let r1 = {name: "Rian M.", level: 25};
+            let r2 = {name: "Firzal", level: 18};
+            let r3 = {name: "Amel", level: 15};
+            
+            if (leaders.length >= 1) r1 = leaders[0];
+            if (leaders.length >= 2) r2 = leaders[1];
+            if (leaders.length >= 3) r3 = leaders[2];
+            
+            let otherRankingsHTML = "";
+            const displayLeaders = leaders.slice(3); // Rank 4 onwards
+            
+            displayLeaders.forEach((leader, idx) => {
+                otherRankingsHTML += `
+                    <div class="leaderboard-row">
+                        <span class="leader-rank-num">${idx + 4}</span>
+                        <div class="leader-avatar">
+                            ${leader.name.substring(0, 1).toUpperCase()}
+                        </div>
+                        <div class="leader-name">${leader.name}</div>
+                        <div class="leader-right">
+                            <div class="leader-level">Lv. ${leader.level}</div>
+                            <div class="leader-exp">${leader.exp} EXP</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            let html = `
+                <!-- BACK BUTTON -->
+                <div style="display:flex; align-items:center; gap:6px; margin-bottom:14px; cursor:pointer; font-size:11px; font-weight:bold; color:var(--color-accent);" onclick="switchTab('setel')">
+                    <span>← Kembali ke Pengaturan</span>
+                </div>
+
+                <!-- PODIUM VISUAL FRAME -->
+                <div class="podium-section">
+                    <!-- RANK #2 -->
+                    <div class="podium-col podium-rank2">
+                        <div class="podium-avatar">${r2.name.substring(0,2).toUpperCase()}</div>
+                        <div class="podium-rank-tag">🥈 #2</div>
+                        <div class="podium-name">${r2.name}</div>
+                        <div class="podium-level">Lv. ${r2.level}</div>
+                    </div>
+                    
+                    <!-- RANK #1 (Gold Center - Taller) -->
+                    <div class="podium-col podium-rank1">
+                        <div class="podium-avatar" style="border-color: var(--color-amber);">${r1.name.substring(0,2).toUpperCase()}</div>
+                        <div class="podium-rank-tag" style="color:var(--color-amber);">👑 #1</div>
+                        <div class="podium-name" style="font-family:'Outfit';">${r1.name}</div>
+                        <div class="podium-level">Lv. ${r1.level}</div>
+                    </div>
+                    
+                    <!-- RANK #3 -->
+                    <div class="podium-col podium-rank3">
+                        <div class="podium-avatar">${r3.name.substring(0,2).toUpperCase()}</div>
+                        <div class="podium-rank-tag">🥉 #3</div>
+                        <div class="podium-name">${r3.name}</div>
+                        <div class="podium-level">Lv. ${r3.level}</div>
+                    </div>
+                </div>
+
+                <!-- RANK TABLE ROWS -->
+                <div class="section-header-text">Peringkat Global Lainnya</div>
+                <div style="margin-bottom:20px;">
+                    ${otherRankingsHTML}
+                </div>
+            `;
+            
+            body.innerHTML = html;
+        }
+
+        // --- PENGATURAN & AKUN PAGE ---
+        function renderSettingsPage() {
+            const body = document.getElementById("screen-body");
+            const user = db.users[currentUserEmail];
+            
+            let html = `
+                <!-- PROFILE DETAILS CARD -->
+                <div class="card" style="display:flex; align-items:center; gap:14px; margin-bottom:14px;">
+                    <div class="podium-avatar" style="width:40px; height:40px; border-color:var(--color-accent); font-size:12px; margin-bottom:0; flex-shrink:0;">
+                        ${user.name.substring(0, 2).toUpperCase()}
+                    </div>
+                    <div style="flex:1; min-width:0;">
+                        <h4 style="font-family:'Outfit'; font-size:12.5px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${user.name}</h4>
+                        <p style="font-size:8.5px; color:var(--text-muted); font-weight:500;">NIM: 2400018093</p>
+                        <span class="chip-badge" style="background-color:rgba(245,158,11,0.1); border-color:var(--color-amber); color:var(--color-amber); font-size:7px; margin-top:2px;">Akun Premium (Gamified)</span>
+                    </div>
+                </div>
+
+                <!-- EDIT USER PROFILE INFO -->
+                <div class="card">
+                    <div class="card-title">👤 Edit Profil Pengguna</div>
+                    <form onsubmit="handleSaveProfile(event)">
+                        <div class="form-group">
+                            <label>Nama Lengkap</label>
+                            <input type="text" class="form-input" id="profile-name" value="${user.name}">
+                        </div>
+                        <div class="form-group" style="margin-bottom:18px;">
+                            <label>Limit Anggaran Bulanan (Rp)</label>
+                            <input type="number" class="form-input" id="profile-limit" value="${user.budget_limit}" min="10000">
+                        </div>
+                        <button type="submit" class="btn" style="padding:10px;">Simpan Perubahan</button>
+                    </form>
+                </div>
+
+                <!-- CONFIGURATION NOTIFICATIONS -->
+                <div class="card">
+                    <div class="card-title">🔔 Konfigurasi Notifikasi</div>
+                    
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <div>
+                            <div style="font-size:10.5px; font-weight:bold;">Pengingat Harian (Reminder)</div>
+                            <div style="font-size:8px; color:var(--text-muted); margin-top:2px;">Aktifkan peringatan tugas harian</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="profile-reminder-toggle" ${user.reminders_enabled ? 'checked' : ''} onchange="handleToggleReminder(this.checked)">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top:10px; margin-bottom:0;">
+                        <label>Waktu Pengingat (WIB)</label>
+                        <div style="display:flex; gap:10px;">
+                            <input type="text" class="form-input" id="profile-reminder-time" value="${user.reminder_time}" style="flex:1;">
+                            <button class="btn" onclick="handleSaveReminderTime()" style="width:auto; padding:0 14px; box-shadow:none;">Setel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACCESS LEADERBOARD (FROM SETTINGS) -->
+                <div class="setting-item" onclick="switchLeaderboardPage()">
+                    <div class="setting-left">
+                        <span class="setting-icon">🏆</span>
+                        <span class="setting-label">Papan Peringkat (Leaderboard)</span>
+                    </div>
+                    <div>
+                        <span class="setting-arrow">➔</span>
+                    </div>
+                </div>
+
+                <!-- DEVELOPER TIM INFO -->
+                <div class="student-board">
+                    <h4>👨‍💻 Tim Pengembang</h4>
+                    <p><strong>Nama:</strong> Firzal Akbar Ramadhan</p>
+                    <p><strong>NIM:</strong> 2400018093</p>
+                    <p><strong>Mata Kuliah:</strong> APPL Kelas C</p>
+                    <p><strong>Dosen Pengampu:</strong> Drs. Tedy Setiadi, M.T.</p>
+                </div>
+
+                <!-- SYSTEM CONTROLS -->
+                <div class="setting-item" style="margin-top:14px;" onclick="openModal('reset-modal')">
+                    <div class="setting-left">
+                        <span class="setting-icon">⚠️</span>
+                        <span class="setting-label danger">Reset Database Ke Bawaan</span>
+                    </div>
+                    <div>
+                        <span class="setting-arrow" style="color:var(--color-red);">➔</span>
+                    </div>
+                </div>
+
+                <div class="setting-item" onclick="handleLogout()">
+                    <div class="setting-left">
+                        <span class="setting-icon">🚪</span>
+                        <span class="setting-label danger">Keluar dari Aplikasi</span>
+                    </div>
+                    <div>
+                        <span class="setting-arrow" style="color:var(--color-red);">➔</span>
+                    </div>
+                </div>
+                
+                <div style="text-align:center; font-size:7.5px; color:var(--text-muted); margin: 20px 0 10px 0;">
+                    Pena App - Version 1.0 (Prod Build)
+                </div>
+            `;
+            
+            body.innerHTML = html;
+        }
+
+        function handleSaveProfile(e) {
+            e.preventDefault();
+            const name = document.getElementById("profile-name").value.trim();
+            const limit = parseFloat(document.getElementById("profile-limit").value);
+            
+            const user = db.users[currentUserEmail];
+            user.name = name;
+            user.budget_limit = limit;
+            
+            saveDB();
+            showToast("Profil berhasil diperbarui!", "success");
+            renderSettingsPage();
+        }
+
+        function handleToggleReminder(checked) {
+            db.users[currentUserEmail].reminders_enabled = checked;
+            saveDB();
+            showToast(checked ? "Notifikasi pengingat harian aktif." : "Notifikasi pengingat harian dinonaktifkan.");
+        }
+
+        function handleSaveReminderTime() {
+            const time = document.getElementById("profile-reminder-time").value.trim();
+            db.users[currentUserEmail].reminder_time = time;
+            saveDB();
+            showToast(`Waktu pengingat disetel ke ${time} WIB.`, "success");
+        }
+
+        function switchLeaderboardPage() {
+            // Render leaderboard inside screen-body and update title
+            document.getElementById("screen-title").innerText = "Leaderboard Global";
+            renderLeaderboardPage();
+        }
+
+        function handleLogout() {
+            currentUserEmail = "";
+            localStorage.removeItem(SESSION_KEY);
+            showToast("Anda berhasil keluar dari akun.");
+            renderAuthPage();
+        }
+
+        // Modal Helpers
+        function openModal(id) {
+            document.getElementById(id).style.display = "flex";
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = "none";
+        }
+
+        function resetDatabase() {
+            closeModal('reset-modal');
+            localStorage.removeItem(DB_KEY);
+            localStorage.removeItem(SESSION_KEY);
+            initDB();
+            showToast("Database Pena berhasil di-reset!", "success");
+            renderAuthPage();
+        }
+
+        // --- PAGE INITIALIZATION BOOTSTRAP ---
+        initDB();
+        
+        if (currentUserEmail) {
+            // Already logged in
+            document.getElementById("screen-header").style.display = "flex";
+            document.getElementById("bottom-nav").style.display = "flex";
+            switchTab("home");
+        } else {
+            // Go to login page
+            renderAuthPage();
+        }
+        
+    </script>
+</body>
+</html>
