@@ -2381,11 +2381,20 @@
 
         function renderAnalyticsPage() {
             const body = document.getElementById("screen-body");
+            const headerTitle = document.getElementById("screen-title");
             
+            // Set dynamic title based on active sub-tab
+            if (currentAnalyticsTab === "leaderboard") {
+                headerTitle.innerText = "Leaderboard Global";
+            } else {
+                headerTitle.innerText = "Analitik & Grafik";
+            }
+
             let html = `
                 <div class="segmented-tabs" style="margin-bottom: 16px;">
-                    <div class="segmented-tab ${currentAnalyticsTab === 'activity' ? 'active' : ''}" onclick="toggleAnalyticsTab('activity')">Kinerja Aktivitas</div>
-                    <div class="segmented-tab ${currentAnalyticsTab === 'finance' ? 'active' : ''}" onclick="toggleAnalyticsTab('finance')">Laporan Keuangan</div>
+                    <div class="segmented-tab ${currentAnalyticsTab === 'activity' ? 'active' : ''}" onclick="toggleAnalyticsTab('activity')">Aktivitas</div>
+                    <div class="segmented-tab ${currentAnalyticsTab === 'finance' ? 'active' : ''}" onclick="toggleAnalyticsTab('finance')">Keuangan</div>
+                    <div class="segmented-tab ${currentAnalyticsTab === 'leaderboard' ? 'active' : ''}" onclick="toggleAnalyticsTab('leaderboard')">Leaderboard</div>
                 </div>
             `;
             
@@ -2462,7 +2471,7 @@
                         💡 <span><strong>Tips Konsistensi:</strong> Selesaikan minimal satu tugas harian agar Daily Streak Anda tidak reset ke nol!</span>
                     </div>
                 `;
-            } else {
+            } else if (currentAnalyticsTab === "finance") {
                 // Financial Allocations
                 const monthStr = new Date().toISOString().substring(0, 7);
                 const userSinks = db.finances.filter(f => f.email === currentUserEmail && f.type === "Sink" && f.date.startsWith(monthStr));
@@ -2529,6 +2538,84 @@
                         </div>
                     </div>
                 `;
+            } else if (currentAnalyticsTab === "leaderboard") {
+                // Render Leaderboard Directly inside Laporan View
+                // Build leader ranking array
+                const leaders = [];
+                Object.entries(db.users).forEach(([email, u]) => {
+                    leaders.push({
+                        email: email,
+                        name: u.name,
+                        level: u.level,
+                        exp: u.exp,
+                        score: (u.level * 1000) + u.exp
+                    });
+                });
+                
+                leaders.sort((a,b) => b.score - a.score);
+                
+                // Top 3 Podium
+                let r1 = {name: "Rian M.", level: 25};
+                let r2 = {name: "Firzal", level: 18};
+                let r3 = {name: "Amel", level: 15};
+                
+                if (leaders.length >= 1) r1 = leaders[0];
+                if (leaders.length >= 2) r2 = leaders[1];
+                if (leaders.length >= 3) r3 = leaders[2];
+                
+                let otherRankingsHTML = "";
+                const displayLeaders = leaders.slice(3); // Rank 4 onwards
+                
+                displayLeaders.forEach((leader, idx) => {
+                    otherRankingsHTML += `
+                        <div class="leaderboard-row">
+                            <span class="leader-rank-num">${idx + 4}</span>
+                            <div class="leader-avatar">
+                                ${leader.name.substring(0, 1).toUpperCase()}
+                            </div>
+                            <div class="leader-name">${leader.name}</div>
+                            <div class="leader-right">
+                                <div class="leader-level">Lv. ${leader.level}</div>
+                                <div class="leader-exp">${leader.exp} EXP</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                    <!-- PODIUM VISUAL FRAME -->
+                    <div class="podium-section">
+                        <!-- RANK #2 -->
+                        <div class="podium-col podium-rank2">
+                            <div class="podium-avatar">${r2.name.substring(0,2).toUpperCase()}</div>
+                            <div class="podium-rank-tag">🥈 #2</div>
+                            <div class="podium-name">${r2.name}</div>
+                            <div class="podium-level">Lv. ${r2.level}</div>
+                        </div>
+                        
+                        <!-- RANK #1 (Gold Center - Taller) -->
+                        <div class="podium-col podium-rank1">
+                            <div class="podium-avatar" style="border-color: var(--color-amber);">${r1.name.substring(0,2).toUpperCase()}</div>
+                            <div class="podium-rank-tag" style="color:var(--color-amber);">👑 #1</div>
+                            <div class="podium-name" style="font-family:'Outfit';">${r1.name}</div>
+                            <div class="podium-level">Lv. ${r1.level}</div>
+                        </div>
+                        
+                        <!-- RANK #3 -->
+                        <div class="podium-col podium-rank3">
+                            <div class="podium-avatar">${r3.name.substring(0,2).toUpperCase()}</div>
+                            <div class="podium-rank-tag">🥉 #3</div>
+                            <div class="podium-name">${r3.name}</div>
+                            <div class="podium-level">Lv. ${r3.level}</div>
+                        </div>
+                    </div>
+
+                    <!-- RANK TABLE ROWS -->
+                    <div class="section-header-text">Peringkat Global Lainnya</div>
+                    <div style="margin-bottom:20px;">
+                        ${otherRankingsHTML}
+                    </div>
+                `;
             }
             
             body.innerHTML = html;
@@ -2537,95 +2624,6 @@
         function toggleAnalyticsTab(tab) {
             currentAnalyticsTab = tab;
             renderAnalyticsPage();
-        }
-
-        // --- GLOBAL LEADERBOARD PAGE ---
-        function renderLeaderboardPage() {
-            const body = document.getElementById("screen-body");
-            
-            // Build leader ranking array
-            const leaders = [];
-            Object.entries(db.users).forEach(([email, u]) => {
-                leaders.push({
-                    email: email,
-                    name: u.name,
-                    level: u.level,
-                    exp: u.exp,
-                    score: (u.level * 1000) + u.exp
-                });
-            });
-            
-            leaders.sort((a,b) => b.score - a.score);
-            
-            // Top 3 Podium
-            let r1 = {name: "Rian M.", level: 25};
-            let r2 = {name: "Firzal", level: 18};
-            let r3 = {name: "Amel", level: 15};
-            
-            if (leaders.length >= 1) r1 = leaders[0];
-            if (leaders.length >= 2) r2 = leaders[1];
-            if (leaders.length >= 3) r3 = leaders[2];
-            
-            let otherRankingsHTML = "";
-            const displayLeaders = leaders.slice(3); // Rank 4 onwards
-            
-            displayLeaders.forEach((leader, idx) => {
-                otherRankingsHTML += `
-                    <div class="leaderboard-row">
-                        <span class="leader-rank-num">${idx + 4}</span>
-                        <div class="leader-avatar">
-                            ${leader.name.substring(0, 1).toUpperCase()}
-                        </div>
-                        <div class="leader-name">${leader.name}</div>
-                        <div class="leader-right">
-                            <div class="leader-level">Lv. ${leader.level}</div>
-                            <div class="leader-exp">${leader.exp} EXP</div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            let html = `
-                <!-- BACK BUTTON -->
-                <div style="display:flex; align-items:center; gap:6px; margin-bottom:14px; cursor:pointer; font-size:11px; font-weight:bold; color:var(--color-accent);" onclick="switchTab('setel')">
-                    <span>← Kembali ke Pengaturan</span>
-                </div>
-
-                <!-- PODIUM VISUAL FRAME -->
-                <div class="podium-section">
-                    <!-- RANK #2 -->
-                    <div class="podium-col podium-rank2">
-                        <div class="podium-avatar">${r2.name.substring(0,2).toUpperCase()}</div>
-                        <div class="podium-rank-tag">🥈 #2</div>
-                        <div class="podium-name">${r2.name}</div>
-                        <div class="podium-level">Lv. ${r2.level}</div>
-                    </div>
-                    
-                    <!-- RANK #1 (Gold Center - Taller) -->
-                    <div class="podium-col podium-rank1">
-                        <div class="podium-avatar" style="border-color: var(--color-amber);">${r1.name.substring(0,2).toUpperCase()}</div>
-                        <div class="podium-rank-tag" style="color:var(--color-amber);">👑 #1</div>
-                        <div class="podium-name" style="font-family:'Outfit';">${r1.name}</div>
-                        <div class="podium-level">Lv. ${r1.level}</div>
-                    </div>
-                    
-                    <!-- RANK #3 -->
-                    <div class="podium-col podium-rank3">
-                        <div class="podium-avatar">${r3.name.substring(0,2).toUpperCase()}</div>
-                        <div class="podium-rank-tag">🥉 #3</div>
-                        <div class="podium-name">${r3.name}</div>
-                        <div class="podium-level">Lv. ${r3.level}</div>
-                    </div>
-                </div>
-
-                <!-- RANK TABLE ROWS -->
-                <div class="section-header-text">Peringkat Global Lainnya</div>
-                <div style="margin-bottom:20px;">
-                    ${otherRankingsHTML}
-                </div>
-            `;
-            
-            body.innerHTML = html;
         }
 
         // --- PENGATURAN & AKUN PAGE ---
@@ -2683,17 +2681,6 @@
                             <input type="text" class="form-input" id="profile-reminder-time" value="${user.reminder_time}" style="flex:1;">
                             <button class="btn" onclick="handleSaveReminderTime()" style="width:auto; padding:0 14px; box-shadow:none;">Setel</button>
                         </div>
-                    </div>
-                </div>
-
-                <!-- ACCESS LEADERBOARD (FROM SETTINGS) -->
-                <div class="setting-item" onclick="switchLeaderboardPage()">
-                    <div class="setting-left">
-                        <span class="setting-icon">🏆</span>
-                        <span class="setting-label">Papan Peringkat (Leaderboard)</span>
-                    </div>
-                    <div>
-                        <span class="setting-arrow">➔</span>
                     </div>
                 </div>
 
@@ -2760,12 +2747,6 @@
             db.users[currentUserEmail].reminder_time = time;
             saveDB();
             showToast(`Waktu pengingat disetel ke ${time} WIB.`, "success");
-        }
-
-        function switchLeaderboardPage() {
-            // Render leaderboard inside screen-body and update title
-            document.getElementById("screen-title").innerText = "Leaderboard Global";
-            renderLeaderboardPage();
         }
 
         function handleLogout() {
